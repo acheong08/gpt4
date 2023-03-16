@@ -29,7 +29,10 @@ type RequestData struct {
 
 func (t RequestData) New() *RequestData {
 	return &RequestData{
-		Transcript:     make([]TranscriptEntry, 0),
+		Transcript: []TranscriptEntry{
+			TranscriptEntry{}.New("text", "User: Hello there.<|im_end|>"),
+			TranscriptEntry{}.New("text", "Assistant: Hello! How can I help?<|im_end|>"),
+		},
 		Temperature:    0.5,
 		MaxTokens:      512,
 		N:              1,

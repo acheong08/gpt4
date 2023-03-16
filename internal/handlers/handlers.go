@@ -49,10 +49,6 @@ func GetResponse(c *gin.Context) {
 		return
 	}
 	conversation := conversations.RequestDataMap.Get(conversationID)
-	conversation.RequestData.AddEntry(typings.TranscriptEntry{
-		Type: "text",
-		Data: "Assistant:",
-	})
 	response, err := api.Send(*conversation.RequestData)
 	if err != nil {
 		c.JSON(500, gin.H{
@@ -71,7 +67,7 @@ func GetResponse(c *gin.Context) {
 	}
 	conversation.RequestData.AddEntry(typings.TranscriptEntry{
 		Type: "text",
-		Data: "Assistant:" + response_text,
+		Data: response_text + "<|im_end|>",
 	})
 	conversations.RequestDataMap.Set(conversationID, conversation)
 }
