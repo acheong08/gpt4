@@ -7,6 +7,14 @@ type TextCompletion struct {
 	Model   string   `json:"model"`
 	Choices []Choice `json:"choices"`
 	Usage   Usage    `json:"usage"`
+	Error   Error    `json:"error"`
+}
+
+type Error struct {
+	Message string `json:"message"`
+	Code    string `json:"code"`
+	Param   string `json:"param"`
+	Type    string `json:"type"`
 }
 
 type Choice struct {

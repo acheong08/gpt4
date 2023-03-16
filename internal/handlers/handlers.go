@@ -69,6 +69,12 @@ func GetResponse(c *gin.Context) {
 		return
 	}
 	response.Model = ""
+	if response.Error.Code != "" {
+		c.JSON(500, gin.H{
+			"error": response.Error.Message,
+		})
+		return
+	}
 	c.JSON(200, response)
 	c.Abort()
 
