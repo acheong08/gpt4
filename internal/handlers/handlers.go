@@ -56,6 +56,7 @@ func GetResponse(c *gin.Context) {
 		})
 		return
 	}
+	response.Model = ""
 	c.JSON(200, response)
 	c.Abort()
 
