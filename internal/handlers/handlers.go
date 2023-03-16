@@ -61,10 +61,17 @@ func GetResponse(c *gin.Context) {
 		return
 	}
 	c.JSON(200, response)
+	c.Abort()
 
+	var response_text string
+	if len(response.Choices) > 0 {
+		response_text = response.Choices[0].Text
+	} else {
+		response_text = "*Empty response*"
+	}
 	conversation.RequestData.AddEntry(typings.TranscriptEntry{
 		Type: "text",
-		Data: "Assistant:" + response.Choices[0].Text,
+		Data: "Assistant:" + response_text,
 	})
 	conversations.RequestDataMap.Set(conversationID, conversation)
 }
