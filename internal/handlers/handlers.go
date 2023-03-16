@@ -84,3 +84,17 @@ func GetHistory(c *gin.Context) {
 	conversation := conversations.RequestDataMap.Get(conversationID)
 	c.JSON(200, conversation.RequestData.Transcript)
 }
+
+func DeleteConversation(c *gin.Context) {
+	conversationID := c.Param("conversation_id")
+	if !conversations.RequestDataMap.Exists(conversationID) {
+		c.JSON(400, gin.H{
+			"error": "conversation not found",
+		})
+		return
+	}
+	conversations.RequestDataMap.Remove(conversationID)
+	c.JSON(200, gin.H{
+		"success": true,
+	})
+}
