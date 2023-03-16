@@ -14,7 +14,8 @@ func main() {
 	})
 	router.GET("/conversation/new", handlers.NewConversation)
 	router.POST("/conversation/add", handlers.AddEntry)
-	router.GET("/conversation/:conversation_id", handlers.GetResponse)
+	router.GET("/conversation/:conversation_id/chat", handlers.GetResponse)
+	router.GET("/conversation/:conversation_id/history", handlers.GetHistory)
 
 	router.Run()
 

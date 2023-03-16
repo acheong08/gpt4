@@ -66,4 +66,17 @@ func GetResponse(c *gin.Context) {
 		Type: "text",
 		Data: "Assistant:" + response.Choices[0].Text,
 	})
+	conversations.RequestDataMap.Set(conversationID, conversation)
+}
+
+func GetHistory(c *gin.Context) {
+	conversationID := c.Param("conversation_id")
+	if !conversations.RequestDataMap.Exists(conversationID) {
+		c.JSON(400, gin.H{
+			"error": "conversation not found",
+		})
+		return
+	}
+	conversation := conversations.RequestDataMap.Get(conversationID)
+	c.JSON(200, conversation.RequestData.Transcript)
 }
