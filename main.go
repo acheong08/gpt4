@@ -12,7 +12,6 @@ func authenticator(c *gin.Context) {
 		c.AbortWithStatus(401)
 		return
 	}
-	// Add CORS header allow all
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Next()
 }
@@ -26,6 +25,7 @@ func main() {
 	})
 	// For all OPTIONS requests, return a 200
 	router.OPTIONS("/*cors", func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
 		c.JSON(200, gin.H{})
 	})
 	router.GET("/conversation/new", authenticator, handlers.NewConversation)
