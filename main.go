@@ -1,12 +1,23 @@
 package main
 
 import (
+	"os"
+
 	"github.com/acheong08/gpt4/internal/handlers"
 	"github.com/gin-gonic/gin"
 )
 
+func authenticator(c *gin.Context) {
+	if c.GetHeader("Authorization") != os.Getenv("AUTH_TOKEN") {
+		c.AbortWithStatus(401)
+		return
+	}
+	c.Next()
+}
+
 func main() {
 	router := gin.Default()
+	router.Use(authenticator)
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
