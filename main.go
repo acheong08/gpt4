@@ -12,6 +12,8 @@ func authenticator(c *gin.Context) {
 		c.AbortWithStatus(401)
 		return
 	}
+	// Add CORS header allow all
+	c.Header("Access-Control-Allow-Origin", "*")
 	c.Next()
 }
 
