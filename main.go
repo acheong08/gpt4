@@ -19,7 +19,6 @@ func authenticator(c *gin.Context) {
 
 func main() {
 	router := gin.Default()
-	router.Use(authenticator)
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -29,10 +28,10 @@ func main() {
 	router.OPTIONS("/*cors", func(c *gin.Context) {
 		c.JSON(200, gin.H{})
 	})
-	router.GET("/conversation/new", handlers.NewConversation)
-	router.POST("/conversation/add", handlers.AddEntry)
-	router.GET("/conversation/:conversation_id/chat", handlers.GetResponse)
-	router.GET("/conversation/:conversation_id/history", handlers.GetHistory)
+	router.GET("/conversation/new", authenticator, handlers.NewConversation)
+	router.POST("/conversation/add", authenticator, handlers.AddEntry)
+	router.GET("/conversation/:conversation_id/chat", authenticator, handlers.GetResponse)
+	router.GET("/conversation/:conversation_id/history", authenticator, handlers.GetHistory)
 
 	router.Run()
 
