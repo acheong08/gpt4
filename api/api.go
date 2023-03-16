@@ -38,6 +38,9 @@ func Send(transcript typings.RequestData) (TextCompletion, error) {
 		return TextCompletion{}, err
 	}
 	defer response.Body.Close()
+	if response.StatusCode != 200 {
+		return TextCompletion{}, err
+	}
 	// Map response to struct
 	var completions TextCompletion
 	err = json.NewDecoder(response.Body).Decode(&completions)
