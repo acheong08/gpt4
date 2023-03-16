@@ -1,6 +1,9 @@
 package typings
 
-import "sync"
+import (
+	"sync"
+	"time"
+)
 
 type SafeConversationMap struct {
 	sync.RWMutex
@@ -46,4 +49,15 @@ func (m *SafeConversationMap) All() map[string]*Conversation {
 		items[k] = v
 	}
 	return items
+}
+func (m *SafeConversationMap) CleanUp() {
+	m.Lock()
+	defer m.Unlock()
+	for k, v := range m.items {
+		// Compare current time to last interaction time
+		// If it's been more than 5 minutes, remove the conversation
+		if time.Now().Unix()-v.LastInteraction > 300 {
+			delete(m.items, k)
+		}
+	}
 }

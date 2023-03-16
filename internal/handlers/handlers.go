@@ -1,11 +1,23 @@
 package handlers
 
 import (
+	"time"
+
 	"github.com/acheong08/gpt4/api"
 	"github.com/acheong08/gpt4/conversations"
 	"github.com/acheong08/gpt4/typings"
 	gin "github.com/gin-gonic/gin"
 )
+
+func init() {
+	// Go routine to clean up conversations that have not been interacted with for 30 minutes
+	go func() {
+		for {
+			time.Sleep(10 * time.Minute)
+			conversations.RequestDataMap.CleanUp()
+		}
+	}()
+}
 
 func NewConversation(c *gin.Context) {
 	id := conversations.NewConversation()
@@ -70,6 +82,7 @@ func GetResponse(c *gin.Context) {
 		Type: "text",
 		Data: response_text + "<|im_end|>",
 	})
+	conversation.LastInteraction = time.Now().Unix()
 	conversations.RequestDataMap.Set(conversationID, conversation)
 }
 
