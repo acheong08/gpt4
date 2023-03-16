@@ -25,6 +25,10 @@ func main() {
 			"message": "pong",
 		})
 	})
+	// For all OPTIONS requests, return a 200
+	router.OPTIONS("/*cors", func(c *gin.Context) {
+		c.JSON(200, gin.H{})
+	})
 	router.GET("/conversation/new", handlers.NewConversation)
 	router.POST("/conversation/add", handlers.AddEntry)
 	router.GET("/conversation/:conversation_id/chat", handlers.GetResponse)
