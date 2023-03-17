@@ -61,13 +61,23 @@ func GetResponse(c *gin.Context) {
 		return
 	}
 	conversation := conversations.RequestDataMap.Get(conversationID)
-	response, err := api.Send(*conversation.RequestData)
-	if err != nil {
-		println(err)
-		c.JSON(500, gin.H{
-			"error": "internal server error",
-		})
-		return
+	retry := 0
+	var response api.TextCompletion
+	var err error
+	for {
+		response, err = api.Send(*conversation.RequestData)
+		if err != nil {
+			retry += 1
+			if retry > 8 {
+				c.JSON(500, gin.H{
+					"error": "openai api error",
+				})
+				return
+			}
+			time.Sleep(500 * time.Millisecond)
+			continue
+		}
+		break
 	}
 	response.Model = ""
 	if response.Error.Code != "" {
