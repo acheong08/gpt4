@@ -79,7 +79,7 @@
         const message = input.value;
         input.value = "";
         const chatBox = document.getElementById("chatBox");
-        chatBox.innerHTML += `<b>You:</b> ${message}<br>`;
+        chatBox.innerHTML += `<b>You:</b> ${message}<br><br>`;
         const requestData = {
           conversation_id: conversationId,
           entry: {
@@ -109,7 +109,7 @@
         );
         const data = await response.json();
         const responseText = data.choices[0].text;
-        chatBox.innerHTML += `<b>${responseText}<b><br>`;
+        chatBox.innerHTML += `<b>${responseText}<b><br><br>`;
         chatBox.scrollTop = chatBox.scrollHeight;
       }
       async function addImage() {
@@ -120,7 +120,7 @@
           reader.onload = async function (e) {
             const base64Image = e.target.result;
             const chatBox = document.getElementById("chatBox");
-            chatBox.innerHTML += `<b>You:</b> <img src="${base64Image}" width="100" /><br>`;
+            chatBox.innerHTML += `<b>You:</b> <img src="${base64Image}" width="100" /><br><br>`;
             // Remove data:image/png;base64, from the string
             const b64Upload = base64Image.substring(22);
             const requestData = {
