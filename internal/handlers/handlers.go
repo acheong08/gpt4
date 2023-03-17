@@ -63,6 +63,7 @@ func GetResponse(c *gin.Context) {
 	conversation := conversations.RequestDataMap.Get(conversationID)
 	response, err := api.Send(*conversation.RequestData)
 	if err != nil {
+		println(err)
 		c.JSON(500, gin.H{
 			"error": "internal server error",
 		})
