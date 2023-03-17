@@ -37,6 +37,7 @@ func main() {
 	router.POST("/conversation/add", authenticator, handlers.AddEntry)
 	router.GET("/conversation/:conversation_id/chat", authenticator, handlers.GetResponse)
 	router.GET("/conversation/:conversation_id/history", authenticator, handlers.GetHistory)
+	router.POST("/conversation/:conversation_id/delete", authenticator, handlers.DeleteConversation)
 
 	router.Run()
 
