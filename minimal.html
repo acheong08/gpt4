@@ -58,6 +58,8 @@
     ></div>
     <input type="text" id="messageInput" style="width: 300px" />
     <button onclick="addMessage()">Add</button>
+    <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="addImage()" />
+    <button onclick="document.getElementById('imageInput').click()">Add Image</button>
     <button onclick="getResponse()">Send</button>
     <script>
       let conversationId;
@@ -107,8 +109,38 @@
         );
         const data = await response.json();
         const responseText = data.choices[0].text;
-        chatBox.innerHTML += `<b>AI:</b> ${responseText}<br>`;
+        chatBox.innerHTML += `<b>${responseText}<b><br>`;
         chatBox.scrollTop = chatBox.scrollHeight;
+      }
+      async function addImage() {
+        const input = document.getElementById("imageInput");
+        const file = input.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = async function (e) {
+            const base64Image = e.target.result;
+            const chatBox = document.getElementById("chatBox");
+            chatBox.innerHTML += `<b>You:</b> <img src="${base64Image}" width="100" /><br>`;
+            const requestData = {
+              conversation_id: conversationId,
+              entry: {
+                type: "image",
+                data: base64Image,
+              },
+            };
+            const response = await fetch("https://gpt4.duti.tech/gpt4/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Insomnia2023",
+              },
+              body: JSON.stringify(requestData),
+            });
+            return await response.json();
+          };
+          reader.readAsDataURL(file);
+          input.value = "";
+        }
       }
 
       newConversation();
