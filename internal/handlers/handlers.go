@@ -68,7 +68,7 @@ func GetResponse(c *gin.Context) {
 		response, err = api.Send(*conversation.RequestData)
 		if err != nil {
 			retry += 1
-			if retry > 8 {
+			if retry > 10 {
 				c.JSON(500, gin.H{
 					"error": "openai api error",
 				})
