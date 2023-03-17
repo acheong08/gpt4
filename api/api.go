@@ -39,9 +39,6 @@ func Send(transcript typings.RequestData) (TextCompletion, error) {
 		return TextCompletion{}, err
 	}
 	defer response.Body.Close()
-	if response.StatusCode != 200 {
-		return TextCompletion{}, fmt.Errorf("openai api returned status code %d", response.StatusCode)
-	}
 	// Map response to struct
 	var completions TextCompletion
 	err = json.NewDecoder(response.Body).Decode(&completions)
@@ -49,5 +46,9 @@ func Send(transcript typings.RequestData) (TextCompletion, error) {
 		return TextCompletion{}, err
 	}
 	completions.ID = ""
+	if response.StatusCode != 200 {
+		println(completions.Error.Message)
+		return TextCompletion{}, fmt.Errorf("openai api returned status code %d", response.StatusCode)
+	}
 	return completions, nil
 }
