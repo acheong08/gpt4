@@ -58,8 +58,16 @@
     ></div>
     <input type="text" id="messageInput" style="width: 300px" />
     <button onclick="addMessage()">Add text</button>
-    <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="addImage()" />
-    <button onclick="document.getElementById('imageInput').click()">Add Image</button>
+    <input
+      type="file"
+      id="imageInput"
+      accept="image/*"
+      style="display: none"
+      onchange="addImage()"
+    />
+    <button onclick="document.getElementById('imageInput').click()">
+      Add Image
+    </button>
     <button onclick="getResponse()">Send</button>
     <script>
       let conversationId;
@@ -121,8 +129,19 @@
             const base64Image = e.target.result;
             const chatBox = document.getElementById("chatBox");
             chatBox.innerHTML += `<b>You:</b> <img src="${base64Image}" width="100" /><br><br>`;
-            // Remove data:image/png;base64, from the string
-            const b64Upload = base64Image.substring(22);
+
+            // Remove data URL prefix from the base64 string
+            const b64Upload = base64Image.replace(
+              /^data:image\/\w+;base64,/,
+              ""
+            );
+
+            // Check if base64 string is valid
+            if (!isValidBase64(b64Upload)) {
+              console.error("Invalid base64 data");
+              return;
+            }
+
             const requestData = {
               conversation_id: conversationId,
               entry: {
@@ -142,6 +161,17 @@
           };
           reader.readAsDataURL(file);
           input.value = "";
+        }
+      }
+
+      function isValidBase64(str) {
+        if (str === "" || str.trim() === "") {
+          return false;
+        }
+        try {
+          return btoa(atob(str)) == str;
+        } catch (err) {
+          return false;
         }
       }
 
