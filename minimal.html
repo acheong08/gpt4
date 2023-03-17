@@ -19,7 +19,7 @@
 
       #chatBox {
         background-color: white;
-        margin-bottom: 10px;
+        margin: 0.5rem;
       }
 
       #messageInput {
@@ -31,17 +31,19 @@
       }
 
       button {
-        background-color: #4caf50;
+        background-color: #6386b8;
         color: white;
         border: none;
         padding: 6px 12px;
         border-radius: 4px;
         cursor: pointer;
         font-size: 14px;
+        margin: 1rem;
+        display:inline-block;
       }
 
       button:hover {
-        background-color: #45a049;
+        background-color: #324b82;
       }
     </style>
   </head>
@@ -49,14 +51,15 @@
     <div
       id="chatBox"
       style="
-        width: 300px;
-        height: 400px;
+        width: 50rem;
+        height: 100rem;
         border: 1px solid black;
         overflow-y: scroll;
         padding: 5px;
       "
     ></div>
     <input type="text" id="messageInput" style="width: 300px" />
+    <div>
     <button onclick="addMessage()">Add text</button>
     <input
       type="file"
@@ -70,6 +73,7 @@
     </button>
     <button onclick="getResponse()">Send</button>
     <button onclick="deleteConversation()">Clear</button>
+    </div>
     <script>
       let conversationId;
 
@@ -146,8 +150,8 @@
           }
         );
         const data = await response.json();
-        const responseText = data.choices[0].text;
-        chatBox.innerHTML += `<b>${responseText}<b><br><br>`;
+        const responseText = data.choices[0].text.replace("Assistant", "<b>Assistant</b>");
+        chatBox.innerHTML += `${responseText}<br><br>`;
         chatBox.scrollTop = chatBox.scrollHeight;
       }
       async function addImage() {
