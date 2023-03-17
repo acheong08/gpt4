@@ -48,7 +48,7 @@ func Send(transcript typings.RequestData) (TextCompletion, error) {
 	completions.ID = ""
 	if response.StatusCode != 200 {
 		println(completions.Error.Message)
-		return TextCompletion{}, fmt.Errorf("openai api returned status code %d", response.StatusCode)
+		return completions, fmt.Errorf("openai api returned status code %d", response.StatusCode)
 	}
 	return completions, nil
 }
