@@ -25,6 +25,7 @@ type RequestData struct {
 	HrMode         bool              `json:"hr_mode"`
 	HrOverlapRatio float64           `json:"hr_overlap_ratio"`
 	TopP           float64           `json:"top_p"`
+	Stop           []string          `json:"stop"`
 }
 
 func (t RequestData) New() *RequestData {
@@ -39,6 +40,7 @@ func (t RequestData) New() *RequestData {
 		HrMode:         false,
 		HrOverlapRatio: 0,
 		TopP:           0.95,
+		Stop:           []string{"<|im_end|>"},
 	}
 }
 
