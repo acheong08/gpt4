@@ -67,6 +67,12 @@ func GetResponse(c *gin.Context) {
 	for {
 		response, err = api.Send(*conversation.RequestData)
 		if err != nil {
+			if response.Error.Message == "Invalid image." {
+				c.JSON(500, gin.H{
+					"error": "Invalid image",
+				})
+				return
+			}
 			retry += 1
 			if retry > 30 {
 				println(err.Error())
