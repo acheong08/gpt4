@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -37,7 +38,7 @@ func Send(transcript typings.RequestData) (TextCompletion, error) {
 	}
 	defer response.Body.Close()
 	if response.StatusCode != 200 {
-		return TextCompletion{}, err
+		return TextCompletion{}, fmt.Errorf("openai api returned status code %d", response.StatusCode)
 	}
 	// Map response to struct
 	var completions TextCompletion
