@@ -14,12 +14,14 @@ import (
 var (
 	key         = os.Getenv("OPENAI_KEY")
 	endpoint    = os.Getenv("OPENAI_ENDPOINT")
+	org_id      = os.Getenv("OPENAI_ORG")
 	http_client = http.DefaultClient
 )
 
 func newRequest(body io.Reader) *http.Request {
 	base_request, _ := http.NewRequest("POST", endpoint, body)
 	base_request.Header.Add("Authorization", "Bearer "+key)
+	base_request.Header.Add("OpenAI-Organization", org_id)
 	base_request.Header.Add("Content-Type", "application/json")
 	base_request.Header.Add("Accept", "application/json")
 	base_request.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36")
